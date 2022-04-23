@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Form\AdType;
 use App\Repository\AdRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AdController extends AbstractController
@@ -31,11 +33,17 @@ class AdController extends AbstractController
      *
      * @return Response
      */
-    public function create()
+    public function create(Request $request, EntityManagerInterface $entityManager) 
     {
         $ad = new Ad();
         
         $form = $this->createForm(AdType::class, $ad);
+        $form->handleRequest(($request));
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($ad);
+            $entityManager->flush();            
+        }
             
         return $this->render('ad/new.html.twig', [
             'form' => $form->createView()
@@ -54,7 +62,7 @@ class AdController extends AbstractController
         // Je récupeère l'annonce qui corrspond au slug !
         // $ad = $repo->findOneBySlug($slug);
 
-        return $this->render('ad/show.html.twig', compact('ad')     );
+        return $this->render('ad/show.html.twig', compact('ad') );
     }
     
 }
