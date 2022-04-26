@@ -1,77 +1,43 @@
 <!DOCTYPE html>
 <html>
-
-	<head>
-		<meta charset="UTF-8">
-		<title>SymBNB -
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
-		<link rel="stylesheet" href="/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/css/app.css">
-		<link rel="stylesheet" href="/css/font-awesome.min.css">
-		<link rel="stylesheet" href="/css/prism-okaidia.css">
-		{#
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      SymBNB -{% block title %}
+        Welcome!
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/css/prism-okaidia.css" />
+    {#
 		    <link rel="stylesheet" href="css/custom.min.css"> #}
-		{# Run `composer require symfony/webpack-encore-bundle`
-		    and uncomment the following Encore helpers to start using Symfony UX #}{% block stylesheets %}
-			{#{{ encore_entry_link_tags('app') }}#}
-		{% endblock %}
+    {# Run `composer require symfony/webpack-encore-bundle`
+		    and uncomment the following Encore helpers to start using Symfony UX #}
+    {% block stylesheets %}
+      {# {{ encore_entry_link_tags('app') }} #}
+    {% endblock %}
+  </head>
 
+  <body>
+    {% include 'partials/header.html.twig' %}
 
-	</head>
+    <main role="main">
+      {% block body %}
+      {% endblock %}
+    </main>
 
-	<body>
+    {% include 'partials/footer.html.twig' %}
 
-		<header>
-			<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-				<div class="container-fluid">
-					<a class="navbar-brand" href="{{ path('app_home') }}">SymBNB</a>
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
+    <script src="/js/jquery.min.js"></script>
 
-					<div class="collapse navbar-collapse" id="navbarColor01">
-						<ul class="navbar-nav me-auto">
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('app_home') }}">Accueil
-								</a>
-							</li>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script src="/js/custom.js"></script>
 
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('ads_index') }}">Annonces
-								</a>
-							</li>
-
-						</ul>
-						<ul class="navbar-nav ml-auto">
-							<li class="nav-item">
-								<a class="nav-link active" href="#">Mon compte
-								</a>
-							</li>
-							
-						</ul>
-
-					</div>
-				</div>
-			</nav>
-
-
-		</header>
-
-		<main role="main"> {% block body %}{% endblock %}
-			</main>
-
-
-			<script src="/js/jquery.min.js"></script>
-
-			<script src="/js/bootstrap.min.js"></script>
-			<script src="/js/prism.js"></script>
-			<script src="/js/custom.js"></script>
-
-			{% block javascripts %}
-				{#{{ encore_entry_script_tags('app') }}#}
-			{% endblock %}
-		</body>
-
-	</html>
+    {% block javascripts %}
+      {# {{ encore_entry_script_tags('app') }} #}
+    {% endblock %}
+  </body>
+</html>

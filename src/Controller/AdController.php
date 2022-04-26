@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\Image;
 use App\Form\AdType;
 use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,12 +21,12 @@ class AdController extends AbstractController
      */
     public function index(AdRepository $repo): Response
     {
-           
+
         $ads = $repo->findAll();
-        
+
         return $this->render('ad/index.html.twig', compact('ads'));
     }
-    
+
     /**
      * Permet de créer une annonce
      * 
@@ -33,18 +34,38 @@ class AdController extends AbstractController
      *
      * @return Response
      */
-    public function create(Request $request, EntityManagerInterface $entityManager) 
+    public function create(Request $request, EntityManagerInterface $entityManager)
     {
         $ad = new Ad();
+
+
         
+
         $form = $this->createForm(AdType::class, $ad);
         $form->handleRequest(($request));
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // traitements des images secondaires
+            foreach ($ad->getImages() as $image) {
+                $image->setAd($ad);
+                $entityManager->persist($image);
+            }
+
             $entityManager->persist($ad);
-            $entityManager->flush();            
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                "L'annonce <strong>{$ad->getTitle()}</strong> a bien été enregistrée !"
+            );
+
+            return $this->redirectToRoute('ads_show', [
+                'slug' => $ad->getSlug()
+            ]);
         }
-            
+
         return $this->render('ad/new.html.twig', [
             'form' => $form->createView()
         ]);
@@ -62,7 +83,6 @@ class AdController extends AbstractController
         // Je récupeère l'annonce qui corrspond au slug !
         // $ad = $repo->findOneBySlug($slug);
 
-        return $this->render('ad/show.html.twig', compact('ad') );
+        return $this->render('ad/show.html.twig', compact('ad'));
     }
-    
 }
