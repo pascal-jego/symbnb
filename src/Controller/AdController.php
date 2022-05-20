@@ -50,6 +50,8 @@ class AdController extends AbstractController
                 $entityManager->persist($image);
             }
 
+            $ad->setAuthor($this->getUser());
+
             $entityManager->persist($ad);
             $entityManager->flush();
 

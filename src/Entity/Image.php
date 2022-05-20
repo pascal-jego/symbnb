@@ -20,13 +20,15 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Url()
+     * @Assert\Url(
+     *    message = "The url '{{ value }}' is not a valid url",
+     * )
      */
     private $url;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=10, minMessage="Le titre doit faire au moins 10 caractères    ")
+     * @Assert\Length(min=10, minMessage="Le titre doit faire au moins 10 caractères")
      */
     private $caption;
 
